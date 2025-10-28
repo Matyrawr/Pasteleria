@@ -1,0 +1,378 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Pacifico&display=swap');
+
+/* Estilos generales */
+body {
+  font-family: 'Lato', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom, #FFF0F5, #FFF4E0); 
+  color: #5C3A21; 
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+/* Encabezados */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Pacifico', cursive;
+  color: #8B5E3C; 
+}
+
+/* Navegación */
+nav {
+  background-color: #FADADD; 
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem 0;
+  font-size: 1.1rem;
+}
+
+nav a {
+  color: #5C3A21; 
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #FBE8A6; 
+}
+
+header {
+  background-color: #FFF4E0; 
+  color: #5C3A21;
+  text-align: center;
+  padding: 2rem 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 3.5rem;
+  text-shadow: 2px 2px #F4978E; 
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 1.3rem;
+}
+
+main {
+  padding: 2rem;
+}
+
+section {
+  background: linear-gradient(to right, #ffffff, #FFFDF3); 
+  margin-bottom: 2.5rem;
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px solid #F78DA7; 
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease-in-out;
+}
+
+section:hover {
+  transform: scale(1.01);
+}
+
+section h2 {
+  background-color: #B2E2DC;
+  color: #5C3A21;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  border: 3px double #F78DA7; 
+  width: fit-content;
+  font-size: 1.8rem;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+}
+
+img {
+  border-radius: 15px;
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 600px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+ul, ol {
+  padding-left: 2rem;
+  font-size: 1.1rem;
+}
+
+ul li, ol li {
+  margin: 0.6rem 0;
+}
+
+
+footer {
+  background-color: #A9746E;
+  padding: 2rem;
+  text-align: center;
+  border-top: 4px solid #A9746E;
+}
+
+footer h2 {
+  color: #FFF4B2; 
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+footer a {
+  color: #FFF4B2; 
+  text-decoration: none;
+  font-weight: bold;
+}
+
+footer a:hover {
+  text-decoration: underline;
+  color: #ffffff;
+}
+
+
+.map-label {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #F4978E;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 4px 6px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 600px;
+  margin: 1rem auto;
+}
+
+input, textarea, button {
+  padding: 0.8rem;
+  border: 2px solid #F78DA7; 
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+input[type="submit"], button {
+  background-color: #B2E2DC; 
+  color: #5C3A21;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+input[type="submit"]:hover, button:hover {
+  background-color: #F4978E; 
+  color: white;
+  transform: translateY(-2px);
+}
+
+
+#btn-up {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #F78DA7; 
+  color: white;
+  border: none;
+  padding: 0.8rem 1rem;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#btn-up:hover {
+  background-color: #F4978E;
+  transform: translateY(-3px);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 2.2rem;
+  }
+
+  main {
+    padding: 1rem;
+  }
+
+  section {
+    padding: 1rem;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
+
+.mision-vision-container {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.mision-vision-container > div {
+  background: linear-gradient(to bottom, #fff, #fff7f7);
+  border: 2px solid #FFC0CB;
+  border-radius: 15px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  flex: 1;
+}
+
+.mision-vision-container h2 {
+  font-family: 'Pacifico', cursive;
+  color: #8B4513;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+}
+
+@media (max-width: 768px) {
+  .mision-vision-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* ================== SECCIÓN CATÁLOGO ================== */
+#catalogo {
+  max-width: 1200px;          
+  margin: 2rem auto;
+  padding: 2rem;               
+  background: #FFFDF3;        
+  border-radius: 20px;         
+  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+  color: #5C3A21;
+}
+
+#catalogo h2 {
+  font-family: 'Pacifico', cursive;
+  color: #8B5E3C;
+  font-size: 2.4rem;           
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+#categorias {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.categoria-btn {
+  background-color: #F78DA7; 
+  border: none;
+  padding: 1rem 1.5rem;       
+  border-radius: 25px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.categoria-btn:hover,
+.categoria-btn.active {
+  background-color: #F4978E;
+  transform: scale(1.05);
+}
+
+#productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.producto-card {
+  background: white;
+  border: 2px solid #F78DA7;
+  border-radius: 15px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: transform 0.2s ease-in-out;
+}
+
+.producto-card:hover {
+  transform: scale(1.03);
+}
+
+.producto-nombre {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #8B5E3C;
+  margin-bottom: 0.3rem;
+}
+
+.producto-codigo {
+  font-size: 0.85rem;
+  color: #A9746E;
+  margin-bottom: 0.6rem;
+}
+
+.producto-precio {
+  font-weight: bold;
+  color: #B24E4E;
+  font-size: 1rem;
+}
+
+.producto-descripcion {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  color: #5C3A21;
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+.producto-card input.mensaje-personalizado {
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+.producto-card button.btn-agregar {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #B2E2DC;
+  color: #5C3A21;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.producto-card button.btn-agregar:hover {
+  background-color: #F4978E;
+  color: white;
+  transform: translateY(-2px);
+}
+
+#productos .producto-card {
+  border: 1px solid red;
+  margin: 10px;
+  padding: 10px;
+}
