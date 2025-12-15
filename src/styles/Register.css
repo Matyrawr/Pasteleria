@@ -1,0 +1,186 @@
+/* REGISTER */
+.formulario-register {
+  background: url('../assets/images/pastel.jpg') no-repeat center center / cover, rgba(255, 245, 225, 0.85);
+  border: 2px solid #B2E2DC;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin: 50px auto;
+}
+
+.formulario-register h3 {
+  font-family: 'Pacifico', cursive;
+  color: #8B4513;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.formulario-register form input,
+.formulario-register form button {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.formulario-register form button {
+  background-color: #B2E2DC;
+  color: #5C3A21;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.formulario-register form button:hover {
+  background-color: #F4978E;
+  color: white;
+}
+
+.formulario-register form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formulario-register form input {
+  width: 90%;
+}
+
+.password-field {
+  display: flex;
+  width: 90%;
+  margin-bottom: 1rem;
+}
+
+.password-field input {
+  flex: 1;
+  padding: 0.8rem;
+  border: 2px solid #ccc;
+  border-radius: 8px 0 0 8px;
+  font-size: 1rem;
+  border-right: none;
+}
+
+.toggle-password {
+  background: none;
+  border: 2px solid #ccc;
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #666;
+  padding: 0.8rem;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-password:hover {
+  background-color: #f0f0f0;
+}
+
+.toggle-password:hover {
+  color: #333;
+}
+
+.boton-iniciar-sesion {
+  padding: 0.5rem 1rem;
+  font-size: 0.6rem;
+  background-color: #FFC0CB;
+  color: #5D4037;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  float: right;
+  margin-top: 0rem;
+}
+
+.boton-iniciar-sesion:hover {
+  background-color: #f8a9ba;
+}
+
+
+
+/* Responsive para Register */
+@media (max-width: 768px) {
+  .formulario-register {
+    padding: 1.5rem;
+    max-width: 90%;
+    margin: 30px auto;
+  }
+
+  .formulario-register h3 {
+    font-size: 1.3rem;
+  }
+
+  .formulario-register form input,
+  .formulario-register form button {
+    font-size: 0.9rem;
+    padding: 0.7rem;
+  }
+
+  .password-field {
+    width: 95%;
+  }
+
+  .password-field input {
+    padding: 0.7rem;
+  }
+
+  .toggle-password {
+    padding: 0.7rem;
+    width: 50px;
+  }
+
+  .boton-iniciar-sesion {
+    font-size: 0.5rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .formulario-register {
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 20px auto;
+  }
+
+  .formulario-register h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .formulario-register form input,
+  .formulario-register form button {
+    font-size: 0.8rem;
+    padding: 0.6rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .password-field {
+    width: 100%;
+    margin-bottom: 0.8rem;
+  }
+
+  .password-field input {
+    padding: 0.6rem;
+  }
+
+  .toggle-password {
+    padding: 0.6rem;
+    width: 45px;
+    font-size: 1rem;
+  }
+
+  .boton-iniciar-sesion {
+    font-size: 0.4rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
