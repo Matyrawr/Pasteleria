@@ -4,7 +4,7 @@ import { useUser } from "../context/UserContext";
 import { useCart } from "../context/CartContext";
 
 const Nav = () => {
-  const { usuarioActivo, logoutUsuario } = useUser();
+  const { usuarioActivo, esAdmin, logoutUsuario } = useUser();
   const { getTotalItems } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -48,7 +48,7 @@ const Nav = () => {
         </Link>
 
         {/* 🔐 SOLO ADMIN */}
-        {usuarioActivo?.rol === "ADMIN" && (
+        {esAdmin() && (
           <Link to="/admin/inventario" onClick={closeMenu}>
             Inventario
           </Link>

@@ -24,11 +24,11 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    const result = registrarUsuario(e, formData);
+  const handleSubmit = async (e) => {
+    const result = await registrarUsuario(e, formData);
 
     if (result.success) {
-      setMensaje({ type: 'success', text: result.message });
+      setMensaje({ type: 'success', text: result.message || 'Registro exitoso' });
       setFormData({
         nombre: '',
         email: '',
@@ -37,8 +37,10 @@ const Register = () => {
         password: '',
         codigo: ''
       });
+      // Redirigir a la pantalla principal tras un breve mensaje
+      setTimeout(() => navigate('/'), 1200);
     } else {
-      setMensaje({ type: 'error', text: result.message });
+      setMensaje({ type: 'error', text: result.message || 'No se pudo registrar' });
     }
   };
 

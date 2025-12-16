@@ -13,7 +13,7 @@ export const useProduct = () => {
 
 export const ProductProvider = ({ children }) => {
 
- const productos = [
+ const productosBase = [
 
   { codigo:"TC001", tipo:"Cuadrada", tamano:"Mediana", nombre:"Torta Cuadrada de Chocolate", precio:"45.000 CLP", descripcion:"Deliciosa torta de chocolate con capas de ganache y un toque de avellanas. Personalizable con mensajes especiales.", imagen: new URL('../assets/images/Torta-Cuadrada-de-Chocolate.png', import.meta.url).href },
   { codigo:"TC002", tipo:"Cuadrada", tamano:"Grande", nombre:"Torta Cuadrada de Frutas", precio:"50.000 CLP", descripcion:"Una mezcla de frutas frescas y crema chantilly sobre un suave bizcocho de vainilla, ideal para celebraciones.", imagen: new URL('../assets/images/Torta-Cuadrada-de-Frutas.png', import.meta.url).href },
@@ -33,9 +33,52 @@ export const ProductProvider = ({ children }) => {
   { codigo:"TE002", tipo:"Especial", tamano: "Grande", nombre:"Torta Especial de Boda", precio:"60.000 CLP", descripcion:"Elegante y deliciosa, esta torta está diseñada para ser el centro de atención en cualquier boda.", imagen: new URL('../assets/images/Torta-Especial-de-Boda.png', import.meta.url).href },
  ];
 
-  const [productosFiltrados, setProductosFiltrados] = useState(productos);
+  const [productos, setProductos] = useState(productosBase);
+  const [productosFiltrados, setProductosFiltrados] = useState(productosBase);
   const [filtroTipo, setFiltroTipo] = useState("Todos");
   const [filtroTamano, setFiltroTamano] = useState("Todos");
+  const [stockPorNombre, setStockPorNombre] = useState({});
+
+  // Función para cargar productos dinámicos desde backend y mezclar con base
+  const refreshProductos = async () => {
+    try {
+      const API = import.meta.env.VITE_API_URL ?? 'http://localhost:8080';
+      const r = await fetch(`${API}/api/productos`);
+      const lista = r.ok ? await r.json() : [];
+      if (!Array.isArray(lista)) return;
+
+      // Mapear stock por nombre
+      const mapa = {};
+      lista.forEach(p => {
+        if (p?.nombre) mapa[p.nombre] = Number(p.stock ?? 0);
+      });
+      setStockPorNombre(mapa);
+
+      // Mapear productos backend a esquema mínimo del catálogo
+      const backendProductos = lista.map(p => ({
+        codigo: p.id ? `BK-${p.id}` : (p.codigo || p.nombre),
+        tipo: p.categoria || 'Backend',
+        tamano: 'N/A',
+        nombre: p.nombre,
+        precio: `${Number(p.precio ?? 0).toLocaleString('es-CL')} CLP`,
+        descripcion: p.descripcion || '',
+        imagen: (() => {
+          const url = p.imageUrl;
+          if (!url) return undefined;
+          // Si es URL absoluta (http/https), usar tal cual; si es ruta relativa (/uploads/..), prefijar API
+          if (/^https?:\/\//i.test(url)) return url;
+          return `${API}${url.startsWith('/') ? url : `/${url}`}`;
+        })()
+      }));
+
+      const merged = [...productosBase, ...backendProductos];
+      setProductos(merged);
+      setProductosFiltrados(merged);
+    } catch (_) {}
+  };
+
+  // Cargar al montar
+  useEffect(() => { refreshProductos(); }, []);
 
   useEffect(() => {
     filtrarProductos();
@@ -60,7 +103,9 @@ export const ProductProvider = ({ children }) => {
     filtroTipo,
     filtroTamano,
     setFiltroTipo,
-    setFiltroTamano
+    setFiltroTamano,
+    stockPorNombre,
+    refreshProductos
   };
 
   return (

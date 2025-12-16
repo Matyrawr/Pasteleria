@@ -11,11 +11,12 @@ const Cart = () => {
     updateQuantity,
     getSubtotal,
     getDescuento,
+    getDesgloseDescuento,
     getTotal,
     clearCart
   } = useCart();
 
-  const { usuarioActivo } = useUser();
+  const { usuarioActivo, estaAutenticado, getAuthHeader, invalidarCodigoDescuento } = useUser();
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('es-CL', {
@@ -28,6 +29,65 @@ const Cart = () => {
     const quantity = parseInt(newQuantity);
     if (!isNaN(quantity) && quantity >= 0) {
       updateQuantity(productCode, quantity);
+    }
+  };
+
+  const iniciarPago = async () => {
+    if (!estaAutenticado()) {
+      alert('⛔ Error: debes iniciar sesión para pagar.');
+      return;
+    }
+
+    try {
+      const API = import.meta.env.VITE_API_URL ?? 'http://localhost:8080';
+      // Validar código promocional antes de crear transacción (para evitar reuso)
+      if (usuarioActivo?.codigoDescuento) {
+        try {
+          const resVal = await fetch(`${API}/api/promos/validate?code=${encodeURIComponent(usuarioActivo.codigoDescuento)}`, {
+            headers: getAuthHeader()
+          });
+          const val = await resVal.json().catch(() => ({}));
+          if (!resVal.ok || !val?.valid || !val?.percent) {
+            alert('Tu código promocional ya fue utilizado o no es válido. Se continuará sin descuento por código.');
+            invalidarCodigoDescuento();
+          }
+        } catch (_) {
+          // Si no se puede validar, continuar de todas formas
+        }
+      }
+      const res = await fetch(`${API}/api/transbank/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAuthHeader()
+        },
+        body: JSON.stringify({ amount: getTotal() })
+      });
+      const text = await res.text();
+      if (!res.ok) throw new Error(text || 'Error creando transacción');
+      let payload;
+      try {
+        payload = JSON.parse(text);
+      } catch {
+        throw new Error('Respuesta inválida de Transbank');
+      }
+      const url = payload?.url;
+      const token = payload?.token;
+      if (!url || !token) throw new Error('Respuesta inválida de Transbank');
+
+      // Transbank requiere enviar token_ws por POST; creamos un formulario temporal
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = url;
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'token_ws';
+      input.value = token;
+      form.appendChild(input);
+      document.body.appendChild(form);
+      form.submit();
+    } catch (e) {
+      alert('No se pudo iniciar el pago: ' + e.message);
     }
   };
 
@@ -108,10 +168,18 @@ const Cart = () => {
               <p><strong>Subtotal:</strong> {formatPrice(getSubtotal())}</p>
 
               {getDescuento() > 0 && (
-                <p>
-                  <strong>Descuento ({usuarioActivo?.descuento}%):</strong>
-                  {' '} -{formatPrice(getDescuento())}
-                </p>
+                <div>
+                  <strong>Descuentos:</strong>
+                  <ul style={{ margin: '6px 0 0 18px' }}>
+                    {getDesgloseDescuento().map((d, idx) => (
+                      <li key={idx}>- {d.label}: {formatPrice(d.amount)}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {usuarioActivo?.tortaGratis && (
+                <p>🎂 Beneficio: torta de cumpleaños gratis disponible.</p>
               )}
 
               <h3>Total del carrito: {formatPrice(getTotal())}</h3>
@@ -129,17 +197,7 @@ const Cart = () => {
 
                 <button
                   className="btn-comprar"
-                  disabled={!usuarioActivo}
-                  onClick={() => {
-                    if (usuarioActivo) {
-                      alert(
-                        `Pago simulado exitoso. Total pagado: ${formatPrice(
-                          getTotal()
-                        )}`
-                      );
-                      clearCart();
-                    }
-                  }}
+                  onClick={iniciarPago}
                 >
                   Proceder al Pago
                 </button>

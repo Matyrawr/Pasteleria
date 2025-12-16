@@ -20,8 +20,8 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    const result = loginUsuario(e, formData);
+  const handleSubmit = async (e) => {
+    const result = await loginUsuario(e, formData);
 
     if (result.success) {
       setMensaje({ type: 'success', text: result.message });

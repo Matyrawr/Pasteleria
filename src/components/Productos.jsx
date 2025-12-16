@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useUser } from '../context/UserContext';
 import { useProduct } from '../context/ProductContext';
 import { useCart } from '../context/CartContext';
 import fallbackImage from '../assets/images/Pasteles-Varios.png';
@@ -11,10 +12,12 @@ const Productos = () => {
     filtroTipo,
     filtroTamano,
     setFiltroTipo,
-    setFiltroTamano
+    setFiltroTamano,
+    stockPorNombre
   } = useProduct();
 
   const { addToCart } = useCart();
+  const { esAdmin } = useUser();
   const [mensajesPersonalizados, setMensajesPersonalizados] = useState({});
   const navigate = useNavigate();
 
@@ -124,9 +127,18 @@ const Productos = () => {
                   <button
                     className="btn-agregar"
                     onClick={() => agregarAlCarrito(prod)}
+                    disabled={(stockPorNombre[prod.nombre] ?? 0) <= 0}
+                    title={(stockPorNombre[prod.nombre] ?? 0) <= 0 ? 'Sin stock' : 'Agregar al carrito'}
                   >
-                    Agregar al carrito
+                    {(stockPorNombre[prod.nombre] ?? 0) <= 0 ? 'Sin stock' : 'Agregar al carrito'}
                   </button>
+
+                  {/* Ejemplo de acción solo admin: marcador visual */}
+                  {!esAdmin() && (
+                    <p style={{ fontSize: '0.85rem', color: '#888' }}>
+                      Algunas acciones de inventario requieren rol administrador.
+                    </p>
+                  )}
                 </div>
               );
             })

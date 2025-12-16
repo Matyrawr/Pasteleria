@@ -15,6 +15,14 @@ export const useCart = () => {
 export const CartProvider = ({ children }) => {
   const { usuarioActivo } = useUser();
   const [cartItems, setCartItems] = useState([]);
+  const DESCUENTO_MAYOR_50_PCT = 0.50; // 50%
+  const DESCUENTO_CODIGO_PCT = 0.05;   // 5% por defecto para otros códigos (solo si backend no provee)
+
+  // Porcentaje de descuento según backend (fuente de verdad)
+  const getCodigoDescuentoPct = () => {
+    const pct = typeof usuarioActivo?.porcentajeCodigo === 'number' ? usuarioActivo.porcentajeCodigo : 0;
+    return pct > 0 ? pct : 0;
+  };
 
   // Cargar carrito desde localStorage al iniciar
   useEffect(() => {
@@ -79,9 +87,35 @@ export const CartProvider = ({ children }) => {
 
   // Calcular descuento aplicado
   const getDescuento = () => {
-    if (!usuarioActivo || !usuarioActivo.descuento) return 0;
     const subtotal = getSubtotal();
-    return subtotal * (usuarioActivo.descuento / 100);
+    if (!usuarioActivo) return 0;
+    let descuento = 0;
+    if (usuarioActivo.descuentoMayor50) {
+      descuento += subtotal * DESCUENTO_MAYOR_50_PCT;
+    }
+    const pctCodigo = getCodigoDescuentoPct();
+    if (usuarioActivo.codigoDescuento && pctCodigo > 0) {
+      descuento += subtotal * pctCodigo;
+    }
+    return Math.round(descuento);
+  };
+
+  // Desglose de descuentos para UI
+  const getDesgloseDescuento = () => {
+    const subtotal = getSubtotal();
+    if (!usuarioActivo) return [];
+    const items = [];
+    if (usuarioActivo.descuentoMayor50) {
+      items.push({ label: 'Descuento por ser mayor de 50 años (50%)', amount: Math.round(subtotal * DESCUENTO_MAYOR_50_PCT) });
+    }
+    const pct = getCodigoDescuentoPct();
+    if (usuarioActivo.codigoDescuento && pct > 0) {
+      const code = String(usuarioActivo.codigoDescuento).trim().toUpperCase();
+      const pctLabel = Math.round(pct * 100);
+      const label = `Descuento por código ${code} (${pctLabel}%)`;
+      items.push({ label, amount: Math.round(subtotal * pct) });
+    }
+    return items;
   };
 
   // Calcular total del carrito (con descuento aplicado)
@@ -108,6 +142,7 @@ export const CartProvider = ({ children }) => {
     updateQuantity,
     getSubtotal,
     getDescuento,
+    getDesgloseDescuento,
     getTotal,
     getTotalItems,
     clearCart

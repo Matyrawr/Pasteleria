@@ -9,6 +9,7 @@ import Register from "./components/Register";
 import Productos from "./components/Productos";
 import Cart from "./components/Cart";
 import Inventario from "./components/Inventario";
+import PagoResultado from "./components/PagoResultado";
 
 import "./styles/Estilos.css";
 
@@ -44,6 +45,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/productos" element={<Productos />} />
               <Route path="/carrito" element={<Cart />} />
+              <Route path="/pago/resultado" element={<PagoResultado />} />
 
               {/* ================= RUTA ADMIN ================= */}
               <Route
